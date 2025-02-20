@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastapi-ingress
+  namespace: default  
+  annotations:
+    konghq.com/strip-path: "true"  # Ensures only the necessary path is forwarded
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - path: /fastapi-service
+            pathType: Prefix
+            backend:
+              service:
+                name: fastapi-service
+                port:
+                  number: 8080  # Ensure Kong routes traffic to the correct port
